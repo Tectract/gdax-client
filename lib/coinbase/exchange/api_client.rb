@@ -328,7 +328,7 @@ module Coinbase
         end
       end
 
-      def deleteParams(path,params={})
+      def deleteParams(path,params={},options={})
         params[:limit] ||= 100 if options[:paginate] == true
         http_verb('DELETE', "#{path}?#{URI.encode_www_form(params)}") do |resp|
           begin
