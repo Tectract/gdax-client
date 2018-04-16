@@ -187,8 +187,8 @@ module Coinbase
       def cancelbypair(params = {})
         params[:product_id] ||= ""
         out = nil
-        puts "cancelbypair called, params: #{params.to_s}"
-        delete("/orders/&product_id=#{params[:product_id].to_s}") do |resp|
+        puts "cancelbypair called, params: #{URI.encode_www_form(params)}"
+        delete("/orders/?#{URI.encode_www_form(params)}") do |resp|
           out = response_object(resp)
           yield(out, resp) if block_given?
         end
