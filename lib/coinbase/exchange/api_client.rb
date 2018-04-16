@@ -187,7 +187,8 @@ module Coinbase
       def cancelbypair(params = {})
         params[:product_id] ||= ""
         out = nil
-        deleteParams("/orders/", params) do |resp|
+        puts "cancelbypair called, params: #{params.to_s}"
+        delete("/orders/&product_id=#{params[:product_id].to_s}") do |resp|
           out = response_object(resp)
           yield(out, resp) if block_given?
         end
@@ -328,6 +329,7 @@ module Coinbase
       end
 
       def deleteParams(path,params={})
+	puts "deleteParams called: params #{params.to_s}"
         http_verb('DELETE', path, params.to_json) do |resp|
           begin
             out = JSON.parse(resp.body)
