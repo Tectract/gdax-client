@@ -187,7 +187,7 @@ module Coinbase
       def cancelbypair(params = {})
         params[:product_id] ||= ""
         out = nil
-        deleteParams("/orders/",product) do |resp|
+        deleteParams("/orders/", params) do |resp|
           out = response_object(resp)
           yield(out, resp) if block_given?
         end
