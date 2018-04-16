@@ -186,10 +186,10 @@ module Coinbase
 
       def cancelbypair(params = {})
         params[:product_id] ||= ""
-        out = nil
         puts "cancelbypair called, params: #{URI.encode_www_form(params)}"
-        delete("/orders/?#{URI.encode_www_form(params)}") do |resp|
-          out = response_object(resp)
+        out = nil
+        deleteParams("/orders/", params, paginate: true) do |resp|
+          out = response_collection(resp)
           yield(out, resp) if block_given?
         end
         out
@@ -329,16 +329,26 @@ module Coinbase
       end
 
       def deleteParams(path,params={})
-	puts "deleteParams called: params #{params.to_s}"
-        http_verb('DELETE', path, params.to_json) do |resp|
+        params[:limit] ||= 100 if options[:paginate] == true
+        http_verb('DELETE', "#{path}?#{URI.encode_www_form(params)}") do |resp|
           begin
             out = JSON.parse(resp.body)
-          rescue
+          rescue JSON::ParserError
             out = resp.body
           end
           out.instance_eval { @response = resp }
           add_metadata(out)
-          yield(out)
+
+          if options[:paginate] && out.count == params[:limit]
+            params[:after] = resp.headers['CB-AFTER']
+            get(path, params, options) do |pages|
+              out += pages
+              add_metadata(out)
+              yield(out)
+            end
+          else
+            yield(out)
+          end
         end
       end
 
