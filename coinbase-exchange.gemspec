@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["john.duhamel@coinbase.com"]
 
   spec.summary       = "Client library for Coinbase Exchange"
-  spec.homepage      = "https://github.com/coinbase/coinbase-exchange-ruby"
+  spec.homepage      = "https://github.com/tectract/gdax-client"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
