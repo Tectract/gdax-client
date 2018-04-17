@@ -339,6 +339,15 @@ rest_api.cancel(order_id) do
 end
 ```
 
+**cancelbypair**
+
+Cancels all orders on a specified product_id (pair). Returns an array of cancelled order_ids (strings).
+
+```ruby
+cancelled = rest_api.cancelbypair(product_id: "BCH-USD")
+puts "saw cancelled orders: #{cancelled.to_s}"
+```
+
 **orders**
 
 Downloads a list of all your orders.  Most likely, you'll only care about your open orders when using this.
