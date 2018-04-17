@@ -190,8 +190,9 @@ module Coinbase
         out = nil
         deleteParams("/orders/", params, paginate: true) do |resp|
           puts "cancelbypair saw deleteParams resp: #{resp.to_s}"
-          out = response_collection(resp)
-          yield(out, resp) if block_given?
+          #out = response_collection(resp)	  	  
+          #yield(out, resp) if block_given?
+	  out = resp
         end
         out
       end
